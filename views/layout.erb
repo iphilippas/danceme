@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	</head>
+	
+	<body>
+		<nav>
+			<ul class="right">
+				<% if is_signed_in? %>
+					<li><a href="#"><%= current_user.username %></a></li>
+					<li><a href="#">Logout</a></li>
+				<% end%>
+			</ul>	
+		</nav>
+		<%= yield %>	
+	</body>
+</html>
+
+

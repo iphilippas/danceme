@@ -1,0 +1,12 @@
+<form action="<%= @url %>" class="" method="POST">
+	<p>
+		<label for="article_title">Title</label>
+		<input id="article_title" name="article[title]" type="text" value="<%= @article.title %>" />
+  </p>
+	<p>
+		<label for="article_body">Body</label>i
+		<textarea class="wmd-input" id="wmd-input" name="article[body]"><%= @article.body %></textarea>
+	</p>
+
+<input id="button_submit" name="submit" type="submit" value="Submit" />
+</form>

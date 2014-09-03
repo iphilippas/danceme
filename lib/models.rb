@@ -11,7 +11,6 @@ module DanceMe
   	attr_protected :password_hash
 
 		field :uid, type: String
-		field :username, type: String
 		field :email, type: String
 		field :password_hash, type: String
 		field :admin, type: Boolean
@@ -27,8 +26,31 @@ module DanceMe
 		def is_admin?
 			return self.admin
 		end
-
+		  
+  	def self.authenticate(email, password)
+    	if password_correct?(email, password)
+      	# Success!
+      	true
+    	else
+      	# Failed! :(
+      	false
+    	end
+  	end
+  
+ 		
 		protected
+		def self.find_by_email(email)
+    	first(conditions: { email: email })
+  	end
+		
+		def self.password_correct?(user_email, password)
+     	user = find_by_email user_email
+    	return if user.nil?
+    	user_pass = Password.new(user.password_hash)
+    	user_pass == password
+  	end
+
+		
 		def encrypt_password
 			self.password_hash = Password.create(self.password)
 		end

@@ -1,21 +1,49 @@
-<form action="/users" class="" method="POST">
-	<p>
-		<label for="user_username">Username</label>
-		<input id="user_username" name="user[username]" type="text" />
-  </p>
-	<p>
-		<label for="user_email">Email</label>
-		<input id="user_email" name="user[email]" type="text" />
-	</p>
-	<p>
-		<label for="user_password">Password</label>
-		<input id="user_password" name="user[password]" type="password" />
-  </p>
-	<p>
-		<label for="user_password_confirmation">Retype Password</label>
-		<input id="user_password_confirmation" name="user[password_confirmation]" type="password" />
-  </p>
+<!DOCTYPE html>
+<html>
+	<head>
+		<%= css :application, :media => 'screen' %>
+	</head>
+	
+	<body>
+		<div class="sign-box">
+			<div class="row">
+    		<div class="medium-12 small-12 large-12 columns text-center"><br />
+					<h2>DanceMeCms Sign Up</h2> 
+				</div>
+			</div>
+				
+			<div class="row">
+				<form action="/users" class="" method="POST">
+					
+					<div class="row">
+						<div class="medium-12 columns">
+							<label>Email
+								<input type="text" name="user[email]"/>
+							</label>
+						</div>
+					</div>	
 
+					<div class="row">
+						<div class="medium-12 columns">
+							<label>Password
+								<input type="password" name="user[password]"/>
+							</label>
+						</div>
+					</div>		
+					
+					<div class="row">
+						<div class="medium-12 columns">
+							<label>Re-type password
+								<input type="password" name="user[password_confirmation]"/>
+							</label>
+						</div>
+					</div>	
+				</form>
+			</div>			
+			
 
-<input id="button_submit" name="submit" type="submit" value="Submit" />
-</form>
+			<input class="button" id="button_submit" name="submit" type="submit" value="Sign Up" />
+		</div>
+		
+		</body>
+</html>

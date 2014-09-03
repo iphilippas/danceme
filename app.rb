@@ -5,7 +5,39 @@ module DanceMe
 	
 	class App < Sinatra::Base
 		register Sinatra::Namespace
-	  
+		register Sinatra::AssetPack		
+
+		set :root, File.dirname(__FILE__) # You must set app root
+
+
+		assets do
+			
+			serve '/css', from: 'assets/stylesheets'
+		 	serve '/js', from: 'assets/javascripts'	
+			serve '/images', from: 'assets/images'
+			
+			css :admin, 'css/admin.css', [
+				'/css/foundation.css',
+				'/css/normalize.css',
+				'/css/admin-core.css'
+			]
+			
+			css :application, 'css/application.css', [
+				'/css/foundation.css',
+				'/css/normalize.css',
+				'/css/front-core.css'
+			]
+
+			js :admin, 'js/admin.js', [
+				'/js/jquery.js',
+				'/js/foundation.js',
+				'/js/admin-core.js'
+			]
+
+			js_compression  :uglify
+  		css_compression :sass
+		end
+		
 		configure do
 			enable :sessions
 			Mongoid.load!(File.expand_path('mongoid.yml', File.dirname(__FILE__))) # Mongo connection
@@ -14,6 +46,7 @@ module DanceMe
 		helpers DanceMe::Helpers	
 			
 		namespace '/users' do
+				
 			get do
 			end
 			
@@ -28,12 +61,22 @@ module DanceMe
       	end
 			end
 			
+			get '/sign_in' do
+				@user = User.new
+
+				erb :'/users/sign_in'
+			end
+	
 			get '/sign_up' do
 				@user = User.new
 				
 				erb :'users/sign_up'						
 			end
 
+			get '/authenticate' do
+			
+			end
+			
 			get '/:id' do
 				@user = User.find(params[:id])
 				erb :'users/profile'
@@ -50,7 +93,7 @@ module DanceMe
 				get '/' do
 					@users = User.all
 
-					erb :'admin/users/index'
+					admin_layout :'admin/users/index'
 				end
 				
 			end

@@ -29,20 +29,19 @@ module DanceMe
 		  
   	def self.authenticate(email, password)
     	if password_correct?(email, password)
-      	# Success!
-      	true
-    	else
+    		true
+			else
       	# Failed! :(
       	false
     	end
   	end
   
- 		
-		protected
-		def self.find_by_email(email)
-    	first(conditions: { email: email })
+ 		def self.find_by_email(email)
+    	self.find_by(email: email)
   	end
-		
+
+		protected
+				
 		def self.password_correct?(user_email, password)
      	user = find_by_email user_email
     	return if user.nil?

@@ -12,7 +12,7 @@
 				</div>
 			</div>
 				
-			<div class="row">
+		
 				<form action="/users" class="" method="POST">
 					
 					<div class="row">
@@ -20,6 +20,10 @@
 							<label>Email
 								<input type="text" name="user[email]"/>
 							</label>
+
+							<% if @user.errors.messages[:email] %>
+								<small class="error"><%= @user.errors.messages[:email].first %></small>
+							<% end %>
 						</div>
 					</div>	
 
@@ -28,6 +32,9 @@
 							<label>Password
 								<input type="password" name="user[password]"/>
 							</label>
+							<% if @user.errors.messages[:password] %>
+								<small class="error"><%= @user.errors.messages[:password].first %></small>
+							<% end %>
 						</div>
 					</div>		
 					
@@ -36,14 +43,18 @@
 							<label>Re-type password
 								<input type="password" name="user[password_confirmation]"/>
 							</label>
+							<% if @user.errors.messages[:password_confirmation] %>
+								<small class="error"><%= @user.errors.messages[:password_confirmation].first %></small>
+							<% end %>
+
 						</div>
 					</div>	
+					
+					<div class="row">	
+						<input class="button" id="button_submit" name="submit" type="submit" value="Sign Up" />
+					</div>	
 				</form>
-			</div>			
-			
-
-			<input class="button" id="button_submit" name="submit" type="submit" value="Sign Up" />
-		</div>
+			</div>
 		
 		</body>
 </html>

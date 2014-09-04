@@ -11,7 +11,7 @@
 	<nav>
 			<ul class="right">
 				<% if is_signed_in? %>
-					<li><a href="#"><%= current_user.username %></a></li>
+					<li><a href="#"><%= current_user.email %></a></li>
 					<li><a href="#">Logout</a></li>
 				<% end%>
 			</ul>	

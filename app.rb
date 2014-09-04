@@ -6,6 +6,7 @@ module DanceMe
 	class App < Sinatra::Base
 		register Sinatra::Namespace
 		register Sinatra::AssetPack		
+		register Sinatra::Can
 
 		set :root, File.dirname(__FILE__) # You must set app root
 
@@ -41,30 +42,34 @@ module DanceMe
 		configure do
 			enable :sessions
 			Mongoid.load!(File.expand_path('mongoid.yml', File.dirname(__FILE__))) # Mongo connection
+			Mongoid.raise_not_found_error = false 
 		end
 		
 		helpers DanceMe::Helpers	
-			
+		
+		error 403 do
+			erb :'403.erb'
+		end
+
 		namespace '/users' do
 				
 			get do
 			end
 			
 			post do
-				user = User.new(params[:user])
+				@user = User.new(params[:user])
       	
-				if user.save
-        	session[:user] = user._id
-					redirect '/'
+				if @user.save
+        	session[:user] = @user._id
+					redirect '/users/' + @user._id
       	else
-        	"Error saving doc"
+					erb :'users/sign_up' 	
       	end
 			end
 			
 			get '/sign_in' do
-				@user = User.new
-
-				erb :'/users/sign_in'
+				redirect '/' if session[:user]
+        erb :'/users/sign_in'
 			end
 	
 			get '/sign_up' do
@@ -73,15 +78,27 @@ module DanceMe
 				erb :'users/sign_up'						
 			end
 
-			get '/authenticate' do
-			
+			post '/authenticate' do
+				if User::authenticate(params[:email],params[:password])
+					user = User::find_by_email(params[:email])
+					session[:user] = user._id
+					redirect '/users/' + user._id
+				else
+					redirect '/users/sign_in'
+				end
 			end
 			
 			get '/:id' do
+					
 				@user = User.find(params[:id])
 				erb :'users/profile'
 			end
+			
+			get '/sign_out' do
+				session[:user] = nil
 
+				return_to = session[:return_to] ? session[:return_to] : '/' 
+			end
 		end
 				
 		namespace '/admin' do
